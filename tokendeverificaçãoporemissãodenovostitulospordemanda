@@ -1,0 +1,47 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+// Contrato de Token com Relatório de Necessidade de Emissão
+contract TokenRelatorioEmissao extends ERC20, Ownable {
+
+    // Endereço do TokenConfirmacao
+    address public contratoTokenConfirmacao;
+
+    // Evento emitido quando um novo relatório é gerado
+    event RelatorioEmissaoGerado(uint256 numeroTokensPronto, uint256 necessidadeEmissao);
+
+    modifier apenasTokenConfirmacao() {
+        require(msg.sender == contratoTokenConfirmacao, "Somente TokenConfirmacao pode chamar esta função");
+        _;
+    }
+
+    constructor(string memory nomeToken, string memory simboloToken, address _contratoTokenConfirmacao) ERC20(nomeToken, simboloToken) {
+        contratoTokenConfirmacao = _contratoTokenConfirmacao;
+    }
+
+    // Função para gerar o relatório de necessidade de emissão
+    function gerarRelatorioEmissao() external apenasTokenConfirmacao {
+        // Execute a lógica de geração do relatório aqui
+        // Por exemplo, você pode calcular a necessidade de emissão com base no número de TokenPronto disponíveis.
+
+        uint256 numeroTokensPronto = balanceOf(address(this));
+
+        // Exemplo: Cálculo básico, apenas para fins ilustrativos
+        uint256 necessidadeEmissao = calcularNecessidadeEmissao(numeroTokensPronto);
+
+        emit RelatorioEmissaoGerado(numeroTokensPronto, necessidadeEmissao);
+    }
+
+    // Função interna para calcular a necessidade de emissão
+    function calcularNecessidadeEmissao(uint256 numeroTokensPronto) internal pure returns (uint256) {
+        // Execute a lógica de cálculo da necessidade de emissão aqui
+        // Por exemplo, você pode aplicar uma fórmula com base em um fator de ordem menor ou igual à regra de demanda.
+
+        // Exemplo: Cálculo básico, apenas para fins ilustrativos
+        uint256 fatorOrdem = 1; // Ajuste conforme necessário
+        return numeroTokensPronto * fatorOrdem;
+    }
+}
