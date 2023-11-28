@@ -1,0 +1,43 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// Contrato de Token de Verificação
+contract TokenVerificacao {
+
+    // Estrutura de Dados para Registro Funcional do Verificador
+    struct RegistroFuncional {
+        address verificador;
+        string nome;
+        string cargo;
+    }
+
+    // Mapeamento de Endereço do Verificador para Seu Registro Funcional
+    mapping(address => RegistroFuncional) public registros;
+
+    // Evento emitido quando um novo verificador é registrado
+    event VerificadorRegistrado(address verificador, string nome, string cargo);
+
+    // Função para Registrar um Novo Verificador
+    function registrarVerificador(address verificador, string memory nome, string memory cargo) external {
+        // Cria uma nova instância de Registro Funcional
+        RegistroFuncional storage novoRegistro = registros[verificador];
+
+        // Preenche as informações do Registro Funcional
+        novoRegistro.verificador = verificador;
+        novoRegistro.nome = nome;
+        novoRegistro.cargo = cargo;
+
+        // Emite o evento de registro
+        emit VerificadorRegistrado(verificador, nome, cargo);
+    }
+
+    // Função para Verificar um Título (Chamada pelo Verificador)
+    function verificarTitulo(address verificador, uint256 id) external {
+        // Realize a lógica de verificação aqui
+        // Por exemplo, você pode acessar o contrato do Título do Tesouro e verificar se o título foi marcado como verificado.
+        // Se a verificação for bem-sucedida, você pode realizar ações adicionais ou atualizar o estado do contrato.
+
+        // Exemplo: TítuloVerificado contratoTitulo = TítuloVerificado(enderecoDoContratoTitulo);
+        // contratoTitulo.verificarTitulo(id);
+    }
+}
